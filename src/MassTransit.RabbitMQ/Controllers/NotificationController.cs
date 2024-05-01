@@ -1,3 +1,6 @@
+using Application.UseCase.Command;
+using MassTransit.RabbitMQ.Dtos;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MassTransit.RabbitMQ.Controllers
@@ -6,18 +9,26 @@ namespace MassTransit.RabbitMQ.Controllers
     [Route("[controller]")]
     public class NotificationController : ControllerBase
     {
-        private readonly ILogger<NotificationController> logger;
+        private readonly IMediator mediator;
 
-        public NotificationController(ILogger<NotificationController> logger)
+        public NotificationController(IMediator mediator)
         {
-            this.logger = logger;
+            this.mediator = mediator;
         }
 
         [HttpPost("[action]")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task Send()
+        public async Task<IActionResult> Send([FromBody] Notification notificationDto, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            await mediator.Publish(new Notify
+            {
+                CorrelationId = Guid.NewGuid(),
+                CreatedAt = DateTime.UtcNow,
+                Message = notificationDto.Message,
+                Type = notificationDto.Type
+            }, cancellationToken);
+
+            return Ok();
         }
     }
 }
