@@ -3,7 +3,7 @@ using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Application.UseCase.Command
+namespace Application.UseCase.Notify.Command
 {
     public sealed class Notify : INotification
     {
@@ -13,16 +13,10 @@ namespace Application.UseCase.Command
         public NotificationType Type { get; set; }
     }
 
-    public sealed class NotifyHandler : INotificationHandler<Notify>
+    public sealed class NotifyHandler(ILogger<NotifyHandler> logger, IPublishEndpoint publishEndpoint) : INotificationHandler<Notify>
     {
-        private readonly ILogger<NotifyHandler> logger;
-        private readonly IPublishEndpoint publishEndpoint;
-
-        public NotifyHandler(ILogger<NotifyHandler> logger, IPublishEndpoint publishEndpoint)
-        {
-            this.logger = logger;
-            this.publishEndpoint = publishEndpoint;
-        }
+        private readonly ILogger<NotifyHandler> logger = logger;
+        private readonly IPublishEndpoint publishEndpoint = publishEndpoint;
 
         public async Task Handle(Notify notification, CancellationToken cancellationToken)
         {

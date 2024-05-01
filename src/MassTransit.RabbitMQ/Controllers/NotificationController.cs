@@ -1,4 +1,4 @@
-using Application.UseCase.Command;
+using Application.UseCase.Notify.Command;
 using MassTransit.RabbitMQ.Dtos;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -7,14 +7,9 @@ namespace MassTransit.RabbitMQ.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class NotificationController : ControllerBase
+    public class NotificationController(IMediator mediator) : ControllerBase
     {
-        private readonly IMediator mediator;
-
-        public NotificationController(IMediator mediator)
-        {
-            this.mediator = mediator;
-        }
+        private readonly IMediator mediator = mediator;
 
         [HttpPost("[action]")]
         [ProducesResponseType(StatusCodes.Status200OK)]

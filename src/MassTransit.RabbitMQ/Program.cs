@@ -1,20 +1,16 @@
-using MassTransit;
-using System.Reflection;
+using Application.Extensions;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-builder.Services.AddMassTransit(busConfigurator =>
-{
-    busConfigurator.SetKebabCaseEndpointNameFormatter();
-    busConfigurator.UsingRabbitMq((context, busFactoryConfigurator) =>
-    {
-        busFactoryConfigurator.Host("rabbitmq", hostConfigurator => { });
-    });
-});
+builder.Services.AddMediatorConfig();
+builder.Services.AddMassTransitConfig();
 
 var app = builder.Build();
 

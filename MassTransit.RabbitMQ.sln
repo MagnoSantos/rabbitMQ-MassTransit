@@ -5,7 +5,12 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "src\Application\Application.csproj", "{0048634A-589C-4C7C-BA2F-FB9B08D4409A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MassTransit.RabbitMQ", "src\MassTransit.RabbitMQ\MassTransit.RabbitMQ.csproj", "{771E79B4-19F8-47AC-8830-44A7D0B40761}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MassTransit.RabbitMQ.Api", "src\MassTransit.RabbitMQ\MassTransit.RabbitMQ.Api.csproj", "{771E79B4-19F8-47AC-8830-44A7D0B40761}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{438E67C9-CE82-4B0F-B926-CB9D11038852}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

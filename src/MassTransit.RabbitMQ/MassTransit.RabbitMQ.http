@@ -1,6 +1,0 @@
-@MassTransit.RabbitMQ_HostAddress = http://localhost:5217
-
-GET {{MassTransit.RabbitMQ_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
