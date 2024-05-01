@@ -15,10 +15,8 @@ namespace MassTransit.RabbitMQ.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Send([FromBody] Notification notificationDto, CancellationToken cancellationToken)
         {
-            await mediator.Publish(new Notify
+            await mediator.Publish(new Notify(DateTime.UtcNow, Guid.NewGuid())
             {
-                CorrelationId = Guid.NewGuid(),
-                CreatedAt = DateTime.UtcNow,
                 Message = notificationDto.Message,
                 Type = notificationDto.Type
             }, cancellationToken);

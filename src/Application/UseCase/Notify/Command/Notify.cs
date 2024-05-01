@@ -5,10 +5,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.UseCase.Notify.Command
 {
-    public sealed class Notify : INotification
+    public sealed class Notify(DateTime createdAt, Guid correlationId) : INotification
     {
-        public DateTime CreatedAt { get; set; }
-        public Guid CorrelationId { get; set; }
+        public DateTime CreatedAt { get; } = createdAt;
+        public Guid CorrelationId { get; } = correlationId;
+
         public string Message { get; set; } = default!;
         public NotificationType Type { get; set; }
     }

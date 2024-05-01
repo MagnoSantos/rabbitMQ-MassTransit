@@ -2,5 +2,5 @@
 
 namespace MassTransit.RabbitMQ.Dtos
 {
-    public record class Notification(DateTime CreatedAt, string Message, NotificationType Type);
+    public record class Notification(string Message, NotificationType Type);
 }
