@@ -1,5 +1,4 @@
-﻿using Application.UseCase.Notify.Command;
-using MassTransit;
+﻿using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
