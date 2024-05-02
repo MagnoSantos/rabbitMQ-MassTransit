@@ -6,7 +6,7 @@ namespace Application.Extensions
 {
     public static class SettingsExtensions
     {
-        public static void AddSettingsConfig(this IServiceCollection services, IConfiguration configuration)
+        public static void UseOptions(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<RabbitMQSettings>(options => configuration.GetSection("RabbitMQSettings").Bind(options));
         }

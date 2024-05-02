@@ -20,9 +20,17 @@ namespace Application.UseCase.Notify.Command
 
         public async Task Consume(ConsumeContext<Notify> context)
         {
-            var serializedMessage = JsonSerializer.Serialize(context.Message);
+            try
+            {
+                var serializedMessage = JsonSerializer.Serialize(context.Message);
 
-            logger.LogInformation(@"{@Consumer} Consume {@message}", nameof(NotifyConsumer), serializedMessage);
+                logger.LogInformation(@"{@Consumer} Consume {@message}", nameof(NotifyConsumer), serializedMessage);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, @"@{Consumer} An error occurred", nameof(NotifyConsumer));
+                throw;
+            }
         }
     }
 }

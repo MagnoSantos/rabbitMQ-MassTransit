@@ -32,7 +32,7 @@ namespace Application.UseCase.Notify.Command
             catch (Exception ex)
             {
                 logger.LogError(ex, @"@{Handler} - An error occurred", nameof(NotifyHandler));
-                throw;
+                throw; //change to domain exceptions 
             }
         }
     }

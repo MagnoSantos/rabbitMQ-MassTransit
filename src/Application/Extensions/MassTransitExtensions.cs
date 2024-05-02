@@ -7,7 +7,7 @@ namespace Application.Extensions
 {
     public static class MassTransitExtensions
     {
-        public static void AddMassTransitConfig(this IServiceCollection services, IConfiguration config)
+        public static void UseMassTransit(this IServiceCollection services, IConfiguration config)
         {
             services.AddMassTransit(busConfigurator =>
             {
@@ -28,7 +28,7 @@ namespace Application.Extensions
             busConfigurator.AddConsumer<NotifyConsumer, NotifyConsumerDefinition>(cfg =>
             {
                 cfg.ConcurrentMessageLimit = messageLimit;
-                cfg.UseMessageRetry(r => r.Immediate(3));
+                cfg.UseMessageRetry(r => r.Immediate(5)); //change to interval 
             });
         }
 
