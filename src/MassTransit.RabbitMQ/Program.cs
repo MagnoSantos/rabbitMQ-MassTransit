@@ -10,7 +10,8 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatorConfig();
-builder.Services.AddMassTransitConfig();
+builder.Services.AddSettingsConfig(builder.Configuration);
+builder.Services.AddMassTransitConfig(builder.Configuration);
 
 var app = builder.Build();
 

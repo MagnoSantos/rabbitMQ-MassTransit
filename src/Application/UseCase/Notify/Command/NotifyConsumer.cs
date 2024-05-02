@@ -1,9 +1,19 @@
-﻿using MassTransit;
+﻿using Application.Settings;
+using MassTransit;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Text.Json;
 
 namespace Application.UseCase.Notify.Command
 {
+    public class NotifyConsumerDefinition : ConsumerDefinition<NotifyConsumer>
+    {
+        public NotifyConsumerDefinition(IOptions<RabbitMQSettings> options)
+        {
+            EndpointName = options.Value.CreateNotifyQueue.Split(':').Last();
+        }
+    }
+
     public class NotifyConsumer(ILogger<NotifyConsumer> logger) : IConsumer<Notify>
     {
         private readonly ILogger<NotifyConsumer> logger = logger;

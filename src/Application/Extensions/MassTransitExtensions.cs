@@ -1,31 +1,48 @@
-﻿using MassTransit;
+﻿using Application.UseCase.Notify.Command;
+using MassTransit;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
 namespace Application.Extensions
 {
     public static class MassTransitExtensions
     {
-        public static void AddMassTransitConfig(this IServiceCollection services)
+        public static void AddMassTransitConfig(this IServiceCollection services, IConfiguration config)
         {
             services.AddMassTransit(busConfigurator =>
             {
-                busConfigurator.SetKebabCaseEndpointNameFormatter();
-
-                var entryAssembly = Assembly.GetExecutingAssembly();
-
-                busConfigurator.AddConsumers(entryAssembly);
+                busConfigurator.AddConsumersConfig(config);
 
                 busConfigurator.UsingRabbitMq((context, busFactoryConfigurator) =>
                 {
-                    busFactoryConfigurator.Host("localhost", "/", h =>
-                    {
-                        h.Username("guest");
-                        h.Password("guest");
-                    });
-
+                    busFactoryConfigurator.ConfigureHost(config);
                     busFactoryConfigurator.ConfigureEndpoints(context);
                 });
+            });
+        }
+
+        private static void AddConsumersConfig(this IBusRegistrationConfigurator busConfigurator, IConfiguration config)
+        {
+            var messageLimit = config.GetValue<int>("RabbitMQSettings:ConcurrentMessageLimit");
+
+            busConfigurator.AddConsumer<NotifyConsumer, NotifyConsumerDefinition>(cfg =>
+            {
+                cfg.ConcurrentMessageLimit = messageLimit;
+                cfg.UseMessageRetry(r => r.Immediate(3));
+            });
+        }
+
+        private static void ConfigureHost(this IRabbitMqBusFactoryConfigurator busFactoryConfigurator, IConfiguration config)
+        {
+            var host = config.GetValue<string>("RabbitMQSettings:Host");
+            var virtualHost = config.GetValue<string>("RabbitMQSettings:VirtualHost");
+            var username = config.GetValue<string>("RabbitMQSettings:Username");
+            var password = config.GetValue<string>("RabbitMQSettings:Password");
+
+            busFactoryConfigurator.Host(host, virtualHost, h =>
+            {
+                h.Username(username ?? throw new ArgumentNullException(username));
+                h.Password(password ?? throw new ArgumentNullException(password));
             });
         }
     }

@@ -1,7 +1,9 @@
 ﻿using Application.Common.Enums;
+using Application.Settings;
 using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Application.UseCase.Notify.Command
 {
@@ -14,16 +16,18 @@ namespace Application.UseCase.Notify.Command
         public NotificationType Type { get; set; }
     }
 
-    public sealed class NotifyHandler(ILogger<NotifyHandler> logger, IPublishEndpoint publishEndpoint) : INotificationHandler<Notify>
+    public sealed class NotifyHandler(ILogger<NotifyHandler> logger, ISendEndpointProvider sendEndpointProvider, IOptions<RabbitMQSettings> options) 
+        : INotificationHandler<Notify>
     {
         private readonly ILogger<NotifyHandler> logger = logger;
-        private readonly IPublishEndpoint publishEndpoint = publishEndpoint;
+        private readonly ISendEndpointProvider sendEndpoint = sendEndpointProvider;
 
         public async Task Handle(Notify notification, CancellationToken cancellationToken)
         {
             try
             {
-                await publishEndpoint.Publish(notification, cancellationToken);
+                var endpoint = await sendEndpoint.GetSendEndpoint(new Uri(options.Value.CreateNotifyQueue));
+                await endpoint.Send(notification, cancellationToken);
             }
             catch (Exception ex)
             {
