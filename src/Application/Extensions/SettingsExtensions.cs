@@ -8,7 +8,7 @@ namespace Application.Extensions
     {
         public static void UseOptions(this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<RabbitMQSettings>(options => configuration.GetSection("RabbitMQSettings").Bind(options));
+            services.Configure<RabbitMQSettings>(options => configuration.GetSection(RabbitMQSettings.Key).Bind(options));
         }
     }
 }
