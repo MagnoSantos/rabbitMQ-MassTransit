@@ -2,7 +2,7 @@
 
 <div id="top"></div>
 <br />
-  <h2 align="center">GraphQL API</h2>
+  <h2 align="center">Rabbit MQ Mass Transit</h2>
 
   <p align="center">
     Repositório exemplo Mass Transit Rabbit MQ
