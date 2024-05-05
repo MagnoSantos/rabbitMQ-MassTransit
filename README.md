@@ -1,5 +1,3 @@
-# rabbitMQ-MassTransit
-
 <div id="top"></div>
 <br />
   <h2 align="center">Rabbit MQ Mass Transit</h2>
