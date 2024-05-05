@@ -1,8 +1,5 @@
 # rabbitMQ-MassTransit
-Demo Mass Transit Rabbit MQ
 
-
-# graphql-aspnetcore
 <div id="top"></div>
 <br />
   <h2 align="center">GraphQL API</h2>
