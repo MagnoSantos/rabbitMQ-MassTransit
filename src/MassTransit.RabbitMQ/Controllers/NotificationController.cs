@@ -1,4 +1,5 @@
 using Application.UseCase.Notify.Command;
+using Domain.Common;
 using MassTransit.RabbitMQ.Dtos;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -12,16 +13,15 @@ namespace MassTransit.RabbitMQ.Controllers
         private readonly IMediator mediator = mediator;
 
         [HttpPost("[action]")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Result<bool>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Send([FromBody] Notification notificationDto, CancellationToken cancellationToken)
         {
-            await mediator.Publish(new Notify(DateTime.UtcNow, Guid.NewGuid())
+            return Ok(await mediator.Send(new Notify(DateTime.UtcNow, Guid.NewGuid())
             {
                 Message = notificationDto.Message,
                 Type = notificationDto.Type
-            }, cancellationToken);
-
-            return Ok();
+            }, cancellationToken));
         }
     }
 }

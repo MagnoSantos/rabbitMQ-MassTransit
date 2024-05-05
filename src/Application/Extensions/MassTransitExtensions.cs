@@ -15,7 +15,6 @@ namespace Application.Extensions
             services.AddMassTransit(busConfigurator =>
             {
                 busConfigurator.AddConsumersConfig(config);
-
                 busConfigurator.UsingRabbitMq((context, busFactoryConfigurator) =>
                 {
                     busFactoryConfigurator.ConfigureEndpoints(context);
